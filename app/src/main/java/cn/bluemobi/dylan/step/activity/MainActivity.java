@@ -60,11 +60,11 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
         String planWalk_QTY = (String) sp.getParam("planWalk_QTY", "7000");
         cc.setCurrentCount(Integer.parseInt(planWalk_QTY), 0);
         if (StepCountModeDispatcher.isSupportStepCountSensor(this)) {
-            tv_isSupport.setText("计歩中...");
+            tv_isSupport.setText("计步中...");
             delayHandler = new Handler(this);
             setupService();
         } else {
-            tv_isSupport.setText("该设备不支持计歩");
+            tv_isSupport.setText("该设备不支持计步");
         }
     }
 

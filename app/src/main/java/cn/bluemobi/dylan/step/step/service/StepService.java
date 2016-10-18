@@ -230,8 +230,8 @@ public class StepService extends Service implements SensorEventListener {
                 new Intent(this, MainActivity.class), 0);
         builder.setContentIntent(contentIntent);
         builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setTicker("Dylan计歩");
-        builder.setContentTitle("Dylan计歩");
+        builder.setTicker("Dylan计步");
+        builder.setContentTitle("Dylan计步");
         //设置不可清除
         builder.setOngoing(true);
         builder.setContentText(content);
@@ -255,7 +255,7 @@ public class StepService extends Service implements SensorEventListener {
                 new Intent(this, MainActivity.class), 0);
         builder.setContentIntent(contentIntent);
         builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setTicker("Dylan计歩提醒您开始锻炼了");
+        builder.setTicker("Dylan计步提醒您开始锻炼了");
         builder.setContentTitle("今日步数" +CURRENT_SETP + " 步");
         //设置不可清除
         builder.setOngoing(false);
@@ -302,7 +302,7 @@ public class StepService extends Service implements SensorEventListener {
                 .setContentText("距离目标还差" + (Integer.valueOf(plan) -CURRENT_SETP) + "步，加油！")
                 .setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL))
 //				.setNumber(number)//显示数量
-                .setTicker("Dylan计歩提醒您开始锻炼了")//通知首次出现在通知栏，带上升动画效果的
+                .setTicker("Dylan计步提醒您开始锻炼了")//通知首次出现在通知栏，带上升动画效果的
                 .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示
                 .setPriority(Notification.PRIORITY_DEFAULT)//设置该通知优先级
 				.setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
