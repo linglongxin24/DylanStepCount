@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_titlebar"
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimary"
+                android:layout_height="48dp"
+                android:fitsSystemWindows="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:onClick="onBackward"
+                    android:padding="38px"
+                    android:src="@mipmap/arrow_back_white"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="#00000000"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="10px"
+                    android:paddingRight="10px"
+                    android:text="锻炼计划"
+                    android:textColor="#ffffff"
+                    android:textSize="60px" />
+
+
+                <ImageView
+                    android:id="@+id/iv_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxEms="4"
+                    android:maxWidth="80px"
+                    android:minEms="2"
+                    android:visibility="gone"
+                    android:paddingLeft="40px"
+                    android:paddingRight="40px"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+        </FrameLayout>
+<ImageView
+    android:layout_width="match_parent"
+    android:src="@mipmap/sport"
+    android:scaleType="centerCrop"
+    android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30px"
+            android:background="#ffffff"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="50px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="每日锻炼步数"
+                    android:textColor="#000000"
+                    android:textSize="50px" />
+
+                <EditText
+                    android:id="@+id/tv_step_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#ffffff"
+                    android:gravity="center_vertical|right"
+                    android:text="7000"
+                    android:textColor="#000000"
+                    android:textSize="50px" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#999999" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="50px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="提醒"
+                    android:textColor="#000000"
+                    android:textSize="50px" />
+
+                <CheckBox
+                    android:id="@+id/cb_remind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cb_plan_selector"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    android:textColor="#000000"
+                    android:textSize="50px" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#999999" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="50px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="提醒时间"
+                    android:textColor="#000000"
+                    android:textSize="50px" />
+
+                <TextView
+                    android:id="@+id/tv_remind_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|right"
+                    android:minWidth="300px"
+                    android:text="21:00"
+                    android:textColor="#000000"
+                    android:textSize="50px" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="235px"
+            android:background="@mipmap/btn_submit_bg"
+            android:text="保存"
+            android:textColor="#ffffff"
+            android:textSize="55px" />
+
+        <WebView
+            android:id="@+id/wv"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100px">
+
+        </WebView>
+    </LinearLayout>
