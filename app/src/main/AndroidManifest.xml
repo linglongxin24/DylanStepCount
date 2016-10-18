@@ -39,6 +39,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SetPlanActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".activity.HistoryActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <service
             android:name=".step.service.StepService"

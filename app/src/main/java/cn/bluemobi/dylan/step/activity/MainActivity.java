@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
 
     private void addListener() {
         tv_set.setOnClickListener(this);
+        tv_data.setOnClickListener(this);
     }
     @Override
     public boolean handleMessage(Message msg) {
@@ -136,6 +137,9 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
         switch (v.getId()){
             case R.id.tv_set:
                 startActivity(new Intent(this,SetPlanActivity.class));
+                break;
+            case R.id.tv_data:
+                startActivity(new Intent(this,HistoryActivity.class));
                 break;
         }
     }
