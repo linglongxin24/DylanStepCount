@@ -6,7 +6,7 @@
 <img src="screenshots/历史记录.jpg" width="30%" height="30%"/>
 </div>
 #1.需要在AndroidManifest.xml中添加权限
-```java
+```xml
     <!--计歩需要的权限-->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
