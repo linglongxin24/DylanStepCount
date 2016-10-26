@@ -22,10 +22,6 @@ import cn.bluemobi.dylan.step.step.utils.StepCountModeDispatcher;
 import cn.bluemobi.dylan.step.view.CustomCircleView;
 
 public class MainActivity extends AppCompatActivity implements Handler.Callback, View.OnClickListener {
-
-    //循环取当前时刻的步数中间的间隔时间
-    private long TIME_INTERVAL = 500;
-
     private TextView tv_data;
     private CustomCircleView cc;
     private TextView tv_set;
@@ -49,10 +45,9 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
     }
 
     private void initData() {
-        cc.setTextSize(50);
         SharedPreferencesUtils sp = new SharedPreferencesUtils(this);
         String planWalk_QTY = (String) sp.getParam("planWalk_QTY", "7000");
-        cc.setCurrentCount(Integer.parseInt(planWalk_QTY), 0);
+        cc.setCurrentCount(Integer.parseInt(planWalk_QTY), 1000);
         if (StepCountModeDispatcher.isSupportStepCountSensor(this)) {
             tv_isSupport.setText("计步中...");
             delayHandler = new Handler(this);
