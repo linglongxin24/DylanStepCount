@@ -13,10 +13,10 @@ import android.view.View;
 import cn.bluemobi.dylan.step.R;
 
 /**
- * Created by admin on 2016/5/26.
+ * Created by DylanAndroid on 2016/5/26.
  * 显示步数的圆弧
  */
-public class CustomCircleView extends View {
+public class StepArcView extends View {
 
     /**
      * 圆弧的宽度
@@ -47,17 +47,17 @@ public class CustomCircleView extends View {
      */
     private int animationLength = 3000;
 
-    public CustomCircleView(Context context) {
+    public StepArcView(Context context) {
         super(context);
 
 
     }
 
-    public CustomCircleView(Context context, AttributeSet attrs) {
+    public StepArcView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CustomCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public StepArcView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -69,7 +69,7 @@ public class CustomCircleView extends View {
         float centerX = (getWidth()) / 2;
         /**指定圆弧的外轮廓矩形区域*/
         RectF rectF = new RectF(0 + borderWidth, borderWidth, 2 * centerX - borderWidth, 2 * centerX - borderWidth);
-        
+
         /**【第一步】绘制整体的黄色圆弧*/
         drawArcYellow(canvas, rectF);
         /**【第二步】绘制当前进度的红色圆弧*/
@@ -214,16 +214,18 @@ public class CustomCircleView extends View {
      * 我们只需要将初始值和结束值提供给ValueAnimator，并且告诉它动画所需运行的时长，
      * 那么ValueAnimator就会自动帮我们完成从初始值平滑地过渡到结束值这样的效果。
      *
-     * @param last
-     * @param current
+     * @param start   初始值
+     * @param current 结束值
+     * @param length  动画时长
      */
-    private void setAnimation(float last, float current, int length) {
-        ValueAnimator progressAnimator = ValueAnimator.ofFloat(last, current);
+    private void setAnimation(float start, float current, int length) {
+        ValueAnimator progressAnimator = ValueAnimator.ofFloat(start, current);
         progressAnimator.setDuration(length);
         progressAnimator.setTarget(currentAngleLength);
         progressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
+                /**每次在初始值和结束值之间产生的一个平滑过渡的值，逐步去更新进度*/
                 currentAngleLength = (float) animation.getAnimatedValue();
                 invalidate();
             }

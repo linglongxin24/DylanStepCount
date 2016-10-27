@@ -19,18 +19,19 @@ import cn.bluemobi.dylan.step.step.config.Constant;
 import cn.bluemobi.dylan.step.step.service.StepService;
 import cn.bluemobi.dylan.step.step.utils.SharedPreferencesUtils;
 import cn.bluemobi.dylan.step.step.utils.StepCountModeDispatcher;
-import cn.bluemobi.dylan.step.view.CustomCircleView;
+import cn.bluemobi.dylan.step.view.StepArcView;
 
 public class MainActivity extends AppCompatActivity implements Handler.Callback, View.OnClickListener {
     private TextView tv_data;
-    private CustomCircleView cc;
+    private StepArcView cc;
     private TextView tv_set;
     private TextView tv_isSupport;
     private Handler delayHandler;
+    private SharedPreferencesUtils sp;
 
     private void assignViews() {
         tv_data = (TextView) findViewById(R.id.tv_data);
-        cc = (CustomCircleView) findViewById(R.id.cc);
+        cc = (StepArcView) findViewById(R.id.cc);
         tv_set = (TextView) findViewById(R.id.tv_set);
         tv_isSupport = (TextView) findViewById(R.id.tv_isSupport);
     }
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
     }
 
     private void initData() {
-        SharedPreferencesUtils sp = new SharedPreferencesUtils(this);
+        sp = new SharedPreferencesUtils(this);
         String planWalk_QTY = (String) sp.getParam("planWalk_QTY", "7000");
         cc.setCurrentCount(Integer.parseInt(planWalk_QTY), 1000);
         if (StepCountModeDispatcher.isSupportStepCountSensor(this)) {
@@ -78,7 +79,8 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
             case Constant.MSG_FROM_SERVER:
-                cc.setCurrentCount(10000, msg.getData().getInt("step"));
+                String planWalk_QTY = (String) sp.getParam("planWalk_QTY", "7000");
+                cc.setCurrentCount(Integer.parseInt(planWalk_QTY), msg.getData().getInt("step"));
                 break;
         }
         return false;
