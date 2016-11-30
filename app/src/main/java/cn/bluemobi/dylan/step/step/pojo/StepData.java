@@ -6,7 +6,7 @@ import com.litesuits.orm.db.annotation.Table;
 import com.litesuits.orm.db.enums.AssignType;
 
 /**
- * Created by xf on 2016/1/30.
+ * Created by dylan on 2016/1/30.
  */
 
 @Table("step")

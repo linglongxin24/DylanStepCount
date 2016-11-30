@@ -1,7 +1,7 @@
 package cn.bluemobi.dylan.step.step.config;
 
 /**
- * Created by xf on 2016/1/30.
+ * Created by dylan on 2016/1/30.
  */
 public class Constant {
     public static final int MSG_FROM_CLIENT = 0;

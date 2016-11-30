@@ -10,6 +10,8 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
+
 import cn.bluemobi.dylan.step.R;
 
 /**
