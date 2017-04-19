@@ -5,7 +5,8 @@
 <img src="screenshots/锻炼计划.jpg" width="30%" height="30%"/>
 <img src="screenshots/历史记录.jpg" width="30%" height="30%"/>
 </div>
-#1.需要在AndroidManifest.xml中添加权限
+# 1.需要在AndroidManifest.xml中添加权限
+
 ```xml
     <!--计歩需要的权限-->
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -21,7 +22,8 @@
         android:required="true" />
 
 ```
-#2.检测手机是否支持计歩
+# 2.检测手机是否支持计歩
+
 ```java
  /**
      * 判断该设备是否支持计歩
