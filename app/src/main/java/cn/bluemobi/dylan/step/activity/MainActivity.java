@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
     private void initData() {
         sp = new SharedPreferencesUtils(this);
         String planWalk_QTY = (String) sp.getParam("planWalk_QTY", "7000");
-        cc.setCurrentCount(Integer.parseInt(planWalk_QTY), 1000);
+        cc.setCurrentCount(Integer.parseInt(planWalk_QTY), 0);
         if (StepCountModeDispatcher.isSupportStepCountSensor(this)) {
             tv_isSupport.setText("计步中...");
             delayHandler = new Handler(this);

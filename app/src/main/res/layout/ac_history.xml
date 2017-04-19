@@ -19,7 +19,8 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:onClick="onBackward"
-            android:padding="38px"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
             android:src="@mipmap/arrow_back_white"
             android:visibility="visible" />
 
@@ -51,7 +52,7 @@
             android:paddingLeft="40px"
             android:paddingRight="40px"
             android:singleLine="true"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
     </LinearLayout>
 
