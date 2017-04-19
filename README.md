@@ -5,6 +5,7 @@
 <img src="screenshots/锻炼计划.jpg" width="30%" height="30%"/>
 <img src="screenshots/历史记录.jpg" width="30%" height="30%"/>
 </div>
+
 # 1.需要在AndroidManifest.xml中添加权限
 
 ```xml
