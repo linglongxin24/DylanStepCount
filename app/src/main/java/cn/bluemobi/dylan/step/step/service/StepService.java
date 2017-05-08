@@ -33,29 +33,30 @@ import java.util.List;
 import cn.bluemobi.dylan.step.R;
 import cn.bluemobi.dylan.step.activity.MainActivity;
 import cn.bluemobi.dylan.step.step.config.Constant;
-import cn.bluemobi.dylan.step.step.pojo.StepData;
+import cn.bluemobi.dylan.step.step.bean.StepData;
 import cn.bluemobi.dylan.step.step.utils.DbUtils;
 
 public class StepService extends Service implements SensorEventListener {
+    private String TAG = "StepService";
     //默认为30秒进行一次存储
     private static int duration = 30000;
     private static String CURRENTDATE = "";
     private SensorManager sensorManager;
-//    private StepDcretor stepDetector;
+    //    private StepDcretor stepDetector;
     private NotificationManager nm;
     private NotificationCompat.Builder builder;
     private Messenger messenger = new Messenger(new MessenerHandler());
     private BroadcastReceiver mBatInfoReceiver;
     private WakeLock mWakeLock;
     private TimeCount time;
-    private int  CURRENT_SETP;
+    private int CURRENT_SETP;
     //计步传感器类型 0-counter 1-detector
     private static int stepSensor = -1;
     private boolean hasRecord = false;
     private int hasStepCount = 0;
     private int prviousStepCount = 0;
 
-    private  class MessenerHandler extends Handler {
+    private class MessenerHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -64,7 +65,7 @@ public class StepService extends Service implements SensorEventListener {
                         Messenger messenger = msg.replyTo;
                         Message replyMsg = Message.obtain(null, Constant.MSG_FROM_SERVER);
                         Bundle bundle = new Bundle();
-                        bundle.putInt("step",CURRENT_SETP);
+                        bundle.putInt("step", CURRENT_SETP);
                         replyMsg.setData(bundle);
                         messenger.send(replyMsg);
                     } catch (RemoteException e) {
@@ -108,12 +109,12 @@ public class StepService extends Service implements SensorEventListener {
         //获取当天的数据，用于展示
         List<StepData> list = DbUtils.getQueryByWhere(StepData.class, "today", new String[]{CURRENTDATE});
         if (list.size() == 0 || list.isEmpty()) {
-           CURRENT_SETP = 0;
+            CURRENT_SETP = 0;
         } else if (list.size() == 1) {
-            Log.v("xf", "StepData=" + list.get(0).toString());
-          CURRENT_SETP = Integer.parseInt(list.get(0).getStep());
+            Log.v(TAG, "StepData=" + list.get(0).toString());
+            CURRENT_SETP = Integer.parseInt(list.get(0).getStep());
         } else {
-            Log.v("xf", "出错了！");
+            Log.v(TAG, "出错了！");
         }
 //        updateNotification("今日步数：" + StepDcretor.CURRENT_SETP + " 步");
     }
@@ -145,22 +146,22 @@ public class StepService extends Service implements SensorEventListener {
             public void onReceive(final Context context, final Intent intent) {
                 String action = intent.getAction();
                 if (Intent.ACTION_SCREEN_ON.equals(action)) {
-                    Log.d("xf", "screen on");
+                    Log.d(TAG, "screen on");
                 } else if (Intent.ACTION_SCREEN_OFF.equals(action)) {
-                    Log.d("xf", "screen off");
+                    Log.d(TAG, "screen off");
                     //改为60秒一存储
                     duration = 60000;
                 } else if (Intent.ACTION_USER_PRESENT.equals(action)) {
-                    Log.d("xf", "screen unlock");
+                    Log.d(TAG, "screen unlock");
 //                    save();
                     //改为30秒一存储
                     duration = 30000;
                 } else if (Intent.ACTION_CLOSE_SYSTEM_DIALOGS.equals(intent.getAction())) {
-                    Log.i("xf", " receive Intent.ACTION_CLOSE_SYSTEM_DIALOGS");
+                    Log.i(TAG, " receive Intent.ACTION_CLOSE_SYSTEM_DIALOGS");
                     //保存一次
                     save();
                 } else if (Intent.ACTION_SHUTDOWN.equals(intent.getAction())) {
-                    Log.i("xf", " receive ACTION_SHUTDOWN");
+                    Log.i(TAG, " receive ACTION_SHUTDOWN");
                     save();
                 } else if (Intent.ACTION_DATE_CHANGED.equals(action)) {//日期变化步数重置为0
 //                    Logger.d("重置步数" + StepDcretor.CURRENT_SETP);
@@ -201,10 +202,10 @@ public class StepService extends Service implements SensorEventListener {
         String time = this.getSharedPreferences("share_date", Context.MODE_MULTI_PROCESS).getString("achieveTime", "21:00");
         String plan = this.getSharedPreferences("share_date", Context.MODE_MULTI_PROCESS).getString("planWalk_QTY", "7000");
         String remind = this.getSharedPreferences("share_date", Context.MODE_MULTI_PROCESS).getString("remind", "1");
-        Logger.d("time="+time+"\n"+
-        "new SimpleDateFormat(\"HH: mm\").format(new Date()))="+new SimpleDateFormat("HH:mm").format(new Date()));
+        Logger.d("time=" + time + "\n" +
+                "new SimpleDateFormat(\"HH: mm\").format(new Date()))=" + new SimpleDateFormat("HH:mm").format(new Date()));
         if (("1".equals(remind)) &&
-                (CURRENT_SETP < Integer.parseInt(plan) )&&
+                (CURRENT_SETP < Integer.parseInt(plan)) &&
                 (time.equals(new SimpleDateFormat("HH:mm").format(new Date())))
                 ) {
 //            workPlanNotification();
@@ -256,7 +257,7 @@ public class StepService extends Service implements SensorEventListener {
         builder.setContentIntent(contentIntent);
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setTicker("Dylan计步提醒您开始锻炼了");
-        builder.setContentTitle("今日步数" +CURRENT_SETP + " 步");
+        builder.setContentTitle("今日步数" + CURRENT_SETP + " 步");
         //设置不可清除
         builder.setOngoing(false);
 //        builder.setContentText("距离目标还差" + (Integer.valueOf(LoginUser.getLoginUser().getPlanWalk_QTY()) - CURRENT_SETP) + "步，加油！");
@@ -299,13 +300,12 @@ public class StepService extends Service implements SensorEventListener {
         String plan = this.getSharedPreferences("share_date", Context.MODE_MULTI_PROCESS).getString("planWalk_QTY", "7000");
         mBuilder = new android.support.v4.app.NotificationCompat.Builder(this);
         mBuilder.setContentTitle("今日步数" + CURRENT_SETP + " 步")
-                .setContentText("距离目标还差" + (Integer.valueOf(plan) -CURRENT_SETP) + "步，加油！")
+                .setContentText("距离目标还差" + (Integer.valueOf(plan) - CURRENT_SETP) + "步，加油！")
                 .setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL))
-//				.setNumber(number)//显示数量
                 .setTicker("Dylan计步提醒您开始锻炼了")//通知首次出现在通知栏，带上升动画效果的
                 .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示
                 .setPriority(Notification.PRIORITY_DEFAULT)//设置该通知优先级
-				.setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
+                .setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
                 .setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND)//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合：
                 //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
@@ -345,7 +345,7 @@ public class StepService extends Service implements SensorEventListener {
      * 获取传感器实例
      */
     private void startStepDetector() {
-        if (sensorManager != null ) {
+        if (sensorManager != null) {
             sensorManager = null;
         }
 //        getLock(this);
@@ -363,20 +363,28 @@ public class StepService extends Service implements SensorEventListener {
 
     /**
      * 添加传感器监听
+     * 1. TYPE_STEP_COUNTER API的解释说返回从开机被激活后统计的步数，当重启手机后该数据归零，
+     * 该传感器是一个硬件传感器所以它是低功耗的。
+     * 为了能持续的计步，请不要反注册事件，就算手机处于休眠状态它依然会计步。
+     * 当激活的时候依然会上报步数。该sensor适合在长时间的计步需求。
+     * <p>
+     * 2.TYPE_STEP_DETECTOR翻译过来就是走路检测，
+     * API文档也确实是这样说的，该sensor只用来监监测走步，每次返回数字1.0。
+     * 如果需要长事件的计步请使用TYPE_STEP_COUNTER。
      */
     private void addCountStepListener() {
         Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         Sensor detectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         if (countSensor != null) {
             stepSensor = 0;
-            Log.v("xf", "countSensor");
+            Log.v(TAG, "countSensor");
             sensorManager.registerListener(StepService.this, countSensor, SensorManager.SENSOR_DELAY_NORMAL);
         } else if (detectorSensor != null) {
             stepSensor = 1;
-            Log.v("xf", "detectorSensor");
+            Log.v(TAG, "detectorSensor");
             sensorManager.registerListener(StepService.this, detectorSensor, SensorManager.SENSOR_DELAY_NORMAL);
         } else {
-            Log.v("xf", "Count sensor not available!");
+            Log.v(TAG, "Count sensor not available!");
 //            addBasePedoListener();
         }
     }
@@ -415,7 +423,7 @@ public class StepService extends Service implements SensorEventListener {
                 hasStepCount = tempStep;
             } else {
                 int thisStepCount = tempStep - hasStepCount;
-               CURRENT_SETP+=(thisStepCount-prviousStepCount);
+                CURRENT_SETP += (thisStepCount - prviousStepCount);
                 prviousStepCount = thisStepCount;
 //                StepDcretor.CURRENT_SETP++;
 
@@ -423,7 +431,7 @@ public class StepService extends Service implements SensorEventListener {
             Logger.d("tempStep" + tempStep);
         } else if (stepSensor == 1) {
             if (event.values[0] == 1.0) {
-             CURRENT_SETP++;
+                CURRENT_SETP++;
             }
 
         }
@@ -455,6 +463,7 @@ public class StepService extends Service implements SensorEventListener {
         }
 
     }
+
     private void save() {
         int tempStep = CURRENT_SETP;
 

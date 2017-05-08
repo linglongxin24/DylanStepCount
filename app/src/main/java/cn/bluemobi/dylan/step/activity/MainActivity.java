@@ -14,19 +14,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cn.bluemobi.dylan.step.R;
+import cn.bluemobi.dylan.step.pedometer.StepsDetectService;
 import cn.bluemobi.dylan.step.step.config.Constant;
 import cn.bluemobi.dylan.step.step.service.StepService;
 import cn.bluemobi.dylan.step.step.utils.SharedPreferencesUtils;
 import cn.bluemobi.dylan.step.step.utils.StepCountModeDispatcher;
 import cn.bluemobi.dylan.step.view.StepArcView;
 
+/**
+ * 记步主页
+ */
 public class MainActivity extends AppCompatActivity implements Handler.Callback, View.OnClickListener {
     private TextView tv_data;
     private StepArcView cc;
     private TextView tv_set;
     private TextView tv_isSupport;
-    private Handler delayHandler;
     private SharedPreferencesUtils sp;
 
     private void assignViews() {
@@ -45,23 +53,40 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
         addListener();
     }
 
-    private void initData() {
-        sp = new SharedPreferencesUtils(this);
-        String planWalk_QTY = (String) sp.getParam("planWalk_QTY", "7000");
-        cc.setCurrentCount(Integer.parseInt(planWalk_QTY), 0);
-        if (StepCountModeDispatcher.isSupportStepCountSensor(this)) {
-            tv_isSupport.setText("计步中...");
-            delayHandler = new Handler(this);
-            setupService();
-        } else {
-            tv_isSupport.setText("该设备不支持计步");
-        }
-    }
-
 
     private void addListener() {
         tv_set.setOnClickListener(this);
         tv_data.setOnClickListener(this);
+    }
+
+    private void initData() {
+        sp = new SharedPreferencesUtils(this);
+        //获取用户设置的计划锻炼步数，没有设置过的话默认7000
+        String planWalk_QTY = (String) sp.getParam("planWalk_QTY", "7000");
+        //设置当前步数为0
+        cc.setCurrentCount(Integer.parseInt(planWalk_QTY), 0);
+        //判断设置是否支持计步
+        if (StepCountModeDispatcher.isSupportStepCountSensor(this)) {
+            tv_isSupport.setText("计步中...");
+            new Handler(this);
+            setupService();
+        } else {
+            startService(new Intent(this, StepsDetectService.class));
+            StepsDetectService.setOnStepDetectListener(new StepsDetectService.OnStepDetectListener() {
+                @Override
+                public void onStepDetect(int steps) {
+                    JSONObject ret = new JSONObject();
+                    try {
+                        ret.put("steps", steps);
+                        tv_isSupport.setText(steps);
+                        Logger.d("steps=" + steps);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+//            tv_isSupport.setText("该设备不支持计步");
+        }
     }
 
 
@@ -132,13 +157,6 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
         }
     };
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (isBind) {
-            this.unbindService(conn);
-        }
-    }
 
     @Override
     public void onClick(View v) {
@@ -149,6 +167,14 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
             case R.id.tv_data:
                 startActivity(new Intent(this, HistoryActivity.class));
                 break;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (isBind) {
+            this.unbindService(conn);
         }
     }
 }

@@ -1,4 +1,4 @@
-package cn.bluemobi.dylan.step.step.pojo;
+package cn.bluemobi.dylan.step.step.bean;
 
 import com.litesuits.orm.db.annotation.Column;
 import com.litesuits.orm.db.annotation.PrimaryKey;

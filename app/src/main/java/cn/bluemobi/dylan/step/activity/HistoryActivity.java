@@ -19,7 +19,7 @@ import java.util.List;
 import cn.bluemobi.dylan.step.R;
 import cn.bluemobi.dylan.step.adapter.CommonAdapter;
 import cn.bluemobi.dylan.step.adapter.CommonViewHolder;
-import cn.bluemobi.dylan.step.step.pojo.StepData;
+import cn.bluemobi.dylan.step.step.bean.StepData;
 import cn.bluemobi.dylan.step.step.utils.DbUtils;
 
 /**

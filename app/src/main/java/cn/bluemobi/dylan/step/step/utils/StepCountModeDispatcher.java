@@ -13,10 +13,6 @@ import android.os.Build;
  */
 public class StepCountModeDispatcher {
 
-    private final static int MICROSECONDS_IN_ONE_MINUTE = 60000000;
-
-    //    private StepCountListener listener;
-//    private StepDetector stepDetector;
     private Context context;
     private boolean hasSensor;
 
