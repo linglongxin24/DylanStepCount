@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
                     }
                 }
             });
-//            tv_isSupport.setText("该设备不支持计步");
+            tv_isSupport.setText("该设备不支持计步");
         }
     }
 
