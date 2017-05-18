@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
  * SharedPreferences的一个工具类，调用setParam就能保存String, Integer, Boolean, Float,
  * Long类型的参数 同样调用getParam就能获取到保存在手机里面的数据
  * 
- * @author xiaanming
+ * @author dylan
  */
 public class SharedPreferencesUtils {
 	private Context context;

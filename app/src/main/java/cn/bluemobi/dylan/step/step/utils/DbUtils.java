@@ -10,7 +10,7 @@ import com.litesuits.orm.db.model.ConflictAlgorithm;
 import java.util.List;
 
 /**
- * Created by xf on 2016/1/31.
+ * Created by dylan on 2016/1/31.
  */
 public class DbUtils {
 
@@ -102,15 +102,18 @@ public class DbUtils {
     public static <T> void deleteAll(Class<T> cla) {
         liteOrm.deleteAll(cla);
     }
+
     /**
      * 删除所有 某字段等于 Vlaue的值
+     *
      * @param cla
      * @param field
      * @param value
      */
-    public static <T> int  deleteWhere(Class<T> cla, String field, String[] value){
-       return liteOrm.delete(cla, new WhereBuilder(cla).where(field + "!=?", value));
+    public static <T> int deleteWhere(Class<T> cla, String field, String[] value) {
+        return liteOrm.delete(cla, new WhereBuilder(cla).where(field + "!=?", value));
     }
+
     /**
      * 仅在以存在时更新
      *
@@ -125,7 +128,7 @@ public class DbUtils {
         liteOrm.update(list);
     }
 
-    public static void closeDb(){
+    public static void closeDb() {
         liteOrm.close();
     }
 
