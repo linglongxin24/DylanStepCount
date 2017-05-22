@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DylanStepCount.iml" filepath="$PROJECT_DIR$/DylanStepCount.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/stepcountaccelerometer/stepcountaccelerometer.iml" filepath="$PROJECT_DIR$/stepcountaccelerometer/stepcountaccelerometer.iml" />
     </modules>
   </component>
 </project>

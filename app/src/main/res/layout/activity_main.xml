@@ -58,7 +58,7 @@
             android:layout_below="@+id/cc"
             android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true"
-            android:text="该设备?支持计步"
+            android:text="该设备支持计步"
             android:textColor="#333333" />
 
     </RelativeLayout>

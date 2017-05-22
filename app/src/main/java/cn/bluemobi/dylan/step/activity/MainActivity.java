@@ -7,30 +7,20 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import cn.bluemobi.dylan.step.R;
-import cn.bluemobi.dylan.step.pedometer.StepsDetectService;
-import cn.bluemobi.dylan.step.step.config.Constant;
+import cn.bluemobi.dylan.step.step.UpdateUiCallBack;
 import cn.bluemobi.dylan.step.step.service.StepService;
 import cn.bluemobi.dylan.step.step.utils.SharedPreferencesUtils;
-import cn.bluemobi.dylan.step.step.utils.StepCountModeDispatcher;
 import cn.bluemobi.dylan.step.view.StepArcView;
 
 /**
  * 记步主页
  */
-public class MainActivity extends AppCompatActivity implements Handler.Callback, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView tv_data;
     private StepArcView cc;
     private TextView tv_set;
@@ -65,51 +55,12 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
         String planWalk_QTY = (String) sp.getParam("planWalk_QTY", "7000");
         //设置当前步数为0
         cc.setCurrentCount(Integer.parseInt(planWalk_QTY), 0);
-        //判断设置是否支持计步
-        if (StepCountModeDispatcher.isSupportStepCountSensor(this)) {
-            tv_isSupport.setText("计步中...");
-            new Handler(this);
-            setupService();
-        } else {
-            startService(new Intent(this, StepsDetectService.class));
-            StepsDetectService.setOnStepDetectListener(new StepsDetectService.OnStepDetectListener() {
-                @Override
-                public void onStepDetect(int steps) {
-                    JSONObject ret = new JSONObject();
-                    try {
-                        ret.put("steps", steps);
-                        tv_isSupport.setText(steps);
-                        Logger.d("steps=" + steps);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            tv_isSupport.setText("该设备不支持计步");
-        }
+        tv_isSupport.setText("计步中...");
+        setupService();
     }
 
 
     private boolean isBind = false;
-    private Messenger mGetReplyMessenger = new Messenger(new Handler(this));
-    private Messenger messenger;
-
-    /**
-     * 从service服务中拿到步数
-     *
-     * @param msg
-     * @return
-     */
-    @Override
-    public boolean handleMessage(Message msg) {
-        switch (msg.what) {
-            case Constant.MSG_FROM_SERVER:
-                String planWalk_QTY = (String) sp.getParam("planWalk_QTY", "7000");
-                cc.setCurrentCount(Integer.parseInt(planWalk_QTY), msg.getData().getInt("step"));
-                break;
-        }
-        return false;
-    }
 
     /**
      * 开启计步服务
@@ -118,8 +69,6 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
         Intent intent = new Intent(this, StepService.class);
         isBind = bindService(intent, conn, Context.BIND_AUTO_CREATE);
         startService(intent);
-
-
     }
 
     /**
@@ -135,14 +84,14 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback,
          */
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            try {
-                messenger = new Messenger(service);
-                Message msg = Message.obtain(null, Constant.MSG_FROM_CLIENT);
-                msg.replyTo = mGetReplyMessenger;
-                messenger.send(msg);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+            StepService stepService = ((StepService.StepBinder) service).getService();
+            stepService.registerCallback(new UpdateUiCallBack() {
+                @Override
+                public void updateUi(int stepCount) {
+                    String planWalk_QTY = (String) sp.getParam("planWalk_QTY", "7000");
+                    cc.setCurrentCount(Integer.parseInt(planWalk_QTY), stepCount);
+                }
+            });
         }
 
         /**
