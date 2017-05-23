@@ -8,7 +8,7 @@
 
 #### 下载体验
 
-![](screenshots/历史记录.jpg)
+![](screenshots/dylanstep.png)
 
 # 1.需要在AndroidManifest.xml中添加权限
 
