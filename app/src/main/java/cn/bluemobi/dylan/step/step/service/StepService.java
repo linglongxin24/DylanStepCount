@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -399,7 +398,7 @@ public class StepService extends Service implements SensorEventListener {
         if (VERSION_CODES >= 19) {
             addCountStepListener();
         } else {
-            addBasePedoListener();
+            addBasePedometerListener();
         }
     }
 
@@ -427,7 +426,7 @@ public class StepService extends Service implements SensorEventListener {
             sensorManager.registerListener(StepService.this, detectorSensor, SensorManager.SENSOR_DELAY_NORMAL);
         } else {
             Log.v(TAG, "Count sensor not available!");
-            addBasePedoListener();
+            addBasePedometerListener();
         }
     }
 
@@ -476,7 +475,7 @@ public class StepService extends Service implements SensorEventListener {
     /**
      * 通过加速度传感器来记步
      */
-    private void addBasePedoListener() {
+    private void addBasePedometerListener() {
         mStepCount = new StepCount();
         mStepCount.setSteps(CURRENT_STEP);
         // 获得传感器的类型，这里获得的类型是加速度传感器
