@@ -10,8 +10,6 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.orhanobut.logger.Logger;
-
 import cn.bluemobi.dylan.step.R;
 
 /**
@@ -194,18 +192,25 @@ public class StepArcView extends View {
      * @param currentCounts 所走步数
      */
     public void setCurrentCount(int totalStepNum, int currentCounts) {
-        stepNumber = currentCounts + "";
-        setTextSize(currentCounts);
         /**如果当前走的步数超过总步数则圆弧还是270度，不能成为园*/
         if (currentCounts > totalStepNum) {
             currentCounts = totalStepNum;
         }
+
+        /**上次所走步数占用总共步数的百分比*/
+        float scalePrevious = (float) Integer.valueOf(stepNumber) / totalStepNum;
+        /**换算成弧度最后要到达的角度的长度-->弧长*/
+        float previousAngleLength = scalePrevious * angleLength;
+
         /**所走步数占用总共步数的百分比*/
         float scale = (float) currentCounts / totalStepNum;
         /**换算成弧度最后要到达的角度的长度-->弧长*/
         float currentAngleLength = scale * angleLength;
         /**开始执行动画*/
-        setAnimation(0, currentAngleLength, animationLength);
+        setAnimation(previousAngleLength, currentAngleLength, animationLength);
+
+        stepNumber = String.valueOf(currentCounts);
+        setTextSize(currentCounts);
     }
 
     /**

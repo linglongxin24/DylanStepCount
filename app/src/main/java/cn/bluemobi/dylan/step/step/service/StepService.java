@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -14,13 +15,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -31,11 +27,11 @@ import java.util.Date;
 import java.util.List;
 
 import cn.bluemobi.dylan.step.R;
+import cn.bluemobi.dylan.step.activity.MainActivity;
 import cn.bluemobi.dylan.step.step.UpdateUiCallBack;
 import cn.bluemobi.dylan.step.step.accelerometer.StepCount;
 import cn.bluemobi.dylan.step.step.accelerometer.StepValuePassListener;
 import cn.bluemobi.dylan.step.step.bean.StepData;
-import cn.bluemobi.dylan.step.step.config.Constant;
 import cn.bluemobi.dylan.step.step.utils.DbUtils;
 
 public class StepService extends Service implements SensorEventListener {
@@ -80,9 +76,21 @@ public class StepService extends Service implements SensorEventListener {
      * 上一次的步数
      */
     private int previousStepCount = 0;
+    /**
+     * 通知管理对象
+     */
     private NotificationManager mNotificationManager;
+    /**
+     * 加速度传感器中获取的步数
+     */
     private StepCount mStepCount;
+    /**
+     * IBinder对象，向Activity传递数据的桥梁
+     */
     private StepBinder stepBinder = new StepBinder();
+    /**
+     * 通知构建者
+     */
     private NotificationCompat.Builder mBuilder;
 
     @Override
@@ -100,6 +108,7 @@ public class StepService extends Service implements SensorEventListener {
         startTimeCount();
 
     }
+
     /**
      * 获取当天日期
      *
@@ -261,10 +270,14 @@ public class StepService extends Service implements SensorEventListener {
      * 更新步数通知
      */
     private void updateNotification() {
+        //设置点击跳转
+        Intent hangIntent = new Intent(this, MainActivity.class);
+        PendingIntent hangPendingIntent = PendingIntent.getActivity(this, 0, hangIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
         Notification notification = mBuilder.setContentTitle(getResources().getString(R.string.app_name))
                 .setContentText("今日步数" + CURRENT_STEP + " 步")
-                .setContentIntent(getDefalutIntent(Notification.FLAG_ONGOING_EVENT))
                 .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示
+                .setContentIntent(hangPendingIntent)
                 .build();
         mNotificationManager.notify(notifyId_Step, notification);
         if (mCallback != null) {
@@ -301,11 +314,15 @@ public class StepService extends Service implements SensorEventListener {
      */
     private void remindNotify() {
 
+        //设置点击跳转
+        Intent hangIntent = new Intent(this, MainActivity.class);
+        PendingIntent hangPendingIntent = PendingIntent.getActivity(this, 0, hangIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
         String plan = this.getSharedPreferences("share_date", Context.MODE_MULTI_PROCESS).getString("planWalk_QTY", "7000");
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setContentTitle("今日步数" + CURRENT_STEP + " 步")
                 .setContentText("距离目标还差" + (Integer.valueOf(plan) - CURRENT_STEP) + "步，加油！")
-                .setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL))
+                .setContentIntent(hangPendingIntent)
                 .setTicker(getResources().getString(R.string.app_name) + "提醒您开始锻炼了")//通知首次出现在通知栏，带上升动画效果的
                 .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示
                 .setPriority(Notification.PRIORITY_DEFAULT)//设置该通知优先级
@@ -333,12 +350,28 @@ public class StepService extends Service implements SensorEventListener {
         return stepBinder;
     }
 
-
+    /**
+     * 向Activity传递数据的纽带
+     */
     public class StepBinder extends Binder {
 
+        /**
+         * 获取当前service对象
+         *
+         * @return StepService
+         */
         public StepService getService() {
             return StepService.this;
         }
+    }
+
+    /**
+     * 获取当前步数
+     *
+     * @return
+     */
+    public int getStepCount() {
+        return CURRENT_STEP;
     }
 
     @Override
