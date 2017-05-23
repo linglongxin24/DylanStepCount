@@ -6,6 +6,10 @@
 <img src="screenshots/历史记录.jpg" width="30%" height="30%"/>
 </div>
 
+#### 下载体验
+
+![](screenshots/历史记录.jpg)
+
 # 1.需要在AndroidManifest.xml中添加权限
 
 ```xml
