@@ -10,6 +10,13 @@
 
 ![](screenshots/dylanstep.png)
 
+
+#万分感谢项目中使用两位大神的算法
+
+ * [xbase](http://www.jianshu.com/p/5d57f7fd84fa)
+
+ * [finnfu](https://github.com/finnfu/stepcount/tree/master/demo%E4%BB%A5%E5%8F%8A%E7%AE%97%E6%B3%95%E6%96%87%E6%A1%A3)
+
 # 1.需要在AndroidManifest.xml中添加权限
 
 ```xml
