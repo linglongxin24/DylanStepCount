@@ -11,7 +11,7 @@
 ![](screenshots/dylanstep.png)
 
 
-#万分感谢项目中使用两位大神的算法
+# 万分感谢项目中使用两位大神的算法
 
  * [xbase](http://www.jianshu.com/p/5d57f7fd84fa)
 
