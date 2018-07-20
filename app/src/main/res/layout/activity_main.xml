@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context="cn.bluemobi.dylan.step.activity.MainActivity">
+    android:background="#FFFFFF">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,7 +27,7 @@
             android:text="查看历史步数"
             android:textColor="#333333" />
 
-        <cn.bluemobi.dylan.step.view.StepArcView
+        <cn.bluemobi.dylan.stepdemo.view.StepArcView
             android:id="@+id/cc"
             android:layout_width="200dp"
             android:layout_height="200dp"
