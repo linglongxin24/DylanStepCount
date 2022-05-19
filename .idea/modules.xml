@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DylanStepCount.iml" filepath="$PROJECT_DIR$/DylanStepCount.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DylanStepCount.iml" filepath="$PROJECT_DIR$/.idea/modules/DylanStepCount.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DylanStepCount.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DylanStepCount.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DylanStepCount.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DylanStepCount.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DylanStepCount.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DylanStepCount.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DylanStepCount.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DylanStepCount.app.unitTest.iml" />
     </modules>
   </component>
 </project>
